@@ -81,6 +81,8 @@ overflow in `test/ui/views_test.dart` is a real overflow.
 - Rate limits only change when Claude Code receives an API response. Record
   recency is not data freshness; see `AggregateUsage` before changing how
   sessions are merged.
+- CI pins Flutter 3.47.9. Newer stable releases add lints that fail
+  `flutter analyze`; bump the pin and fix them in the same change.
 - macOS and Windows code paths are untested. Say so in anything you write
   about them.
 - Regenerate README images with `tool/make_screenshots.py` after visual

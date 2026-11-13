@@ -9,7 +9,7 @@
 A small always-on-top desktop widget with activity-style rings for your
 5-hour and 7-day limits. Local only: no network calls, no login token.
 
-[![CI](https://github.com/jihanurrahman33/-claude-usage-widget/actions/workflows/ci.yml/badge.svg)](https://github.com/jihanurrahman33/-claude-usage-widget/actions/workflows/ci.yml)
+[![CI](https://github.com/jihanurrahman33/Claude-Usage-Widget/actions/workflows/ci.yml/badge.svg)](https://github.com/jihanurrahman33/Claude-Usage-Widget/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey)
 
@@ -50,8 +50,8 @@ usual Linux desktop build tools.
 
 ```bash
 sudo apt install libayatana-appindicator3-dev libnotify-dev   # tray icon
-git clone https://github.com/jihanurrahman33/-claude-usage-widget.git
-cd ./-claude-usage-widget
+git clone https://github.com/jihanurrahman33/Claude-Usage-Widget.git
+cd Claude-Usage-Widget
 ./build_linux.sh && ./install_linux.sh
 ```
 
