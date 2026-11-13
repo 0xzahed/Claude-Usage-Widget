@@ -1,0 +1,12 @@
+# Changelog
+
+## 0.1.0 (unreleased)
+
+First version.
+
+- Rings for 5-hour and 7-day limits, with reset countdowns.
+- Gateway spend and API-key cost views.
+- Status line bridge with one-switch install and restore.
+- Tray icon, launch at login, alerts at 80% and 95%, opacity slider.
+- Light and dark themes.
+- Linux tested; macOS and Windows untested.

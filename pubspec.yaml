@@ -1,0 +1,36 @@
+name: claude_usage_widget
+description: Floating always-on-top widget that shows Claude Code usage.
+publish_to: none
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.13.7
+
+dependencies:
+  equatable: ^3.0.0
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^9.1.1
+  path: ^1.9.1
+  shared_preferences: ^2.5.6
+  tray_manager: ^0.8.3
+  usage_bridge:
+    path: bridge
+  window_manager: ^0.5.1
+
+dev_dependencies:
+  bloc_test: ^10.0.0
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.5
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/icon.png
+  fonts:
+    # Inter, SIL Open Font License 1.1 (assets/fonts/OFL.txt).
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter.ttf

@@ -1,0 +1,63 @@
+name: build
+on:
+  push: { tags: ['v*'] }
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: windows-latest, name: windows }
+          - { os: macos-latest, name: macos }
+          - { os: ubuntu-latest, name: linux }
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with: { channel: stable }
+      - name: Linux deps
+        if: matrix.name == 'linux'
+        run: sudo apt-get update && sudo apt-get install -y ninja-build libgtk-3-dev
+      - run: flutter pub get
+      - run: flutter test
+      - name: Bridge tests
+        shell: bash
+        run: cd bridge && dart pub get && dart test
+      - name: Compile bridge
+        shell: bash
+        run: |
+          cd bridge && dart pub get
+          dart compile exe bin/usage_bridge.dart -o usage_bridge${{ matrix.name == 'windows' && '.exe' || '' }}
+
+      - name: Build + package (windows)
+        if: matrix.name == 'windows'
+        shell: pwsh
+        run: |
+          flutter build windows --release
+          Copy-Item bridge/usage_bridge.exe build/windows/x64/runner/Release/
+          Compress-Archive build/windows/x64/runner/Release/* claude-usage-widget-windows.zip
+
+      - name: Build + package (macos)
+        if: matrix.name == 'macos'
+        run: |
+          flutter build macos --release
+          APP=build/macos/Build/Products/Release/claude_usage_widget.app
+          cp bridge/usage_bridge "$APP/Contents/MacOS/"
+          codesign --force --deep --sign - "$APP"
+          hdiutil create -volname "Claude Usage Widget" -srcfolder "$APP" -ov -format UDZO claude-usage-widget-macos.dmg
+
+      - name: Build + package (linux)
+        if: matrix.name == 'linux'
+        run: |
+          flutter build linux --release
+          cp bridge/usage_bridge build/linux/x64/release/bundle/
+          cp install_linux.sh build/linux/x64/release/bundle/
+          mkdir -p build/linux/x64/release/bundle/assets && cp assets/icon.png build/linux/x64/release/bundle/assets/
+          tar -C build/linux/x64/release/bundle -czf claude-usage-widget-linux.tar.gz .
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.name }}
+          path: claude-usage-widget-*
