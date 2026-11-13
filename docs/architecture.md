@@ -19,11 +19,26 @@ means spend since midnight.
 | Layer | Folder | Job |
 |---|---|---|
 | Config | `config/` | Constants, logger |
-| Domain | `domain/` | `UsageSnapshot` (sealed: none, subscription, gateway, API), `AggregateUsage`, `AlertPolicy` |
-| Data | `data/` | Services wrap files, window, tray, autostart, notifications, settings. Repositories turn them into domain models |
+| Domain | `domain/` | `UsageSnapshot` (sealed: none, subscription, gateway, API), `SessionRecord`, `AggregateUsage`, `AlertPolicy`. Pure Dart: no I/O, no Flutter UI |
+| Data | `data/` | Services wrap files, window, tray, autostart, notifications, settings. Mappers and repositories turn them into domain models |
 | UI | `ui/` | `UsageWidgetCubit` holds one immutable state; views only draw it |
 
-`main.dart` builds the services and injects them into the cubit.
+Dependencies point inwards only: `ui → data → domain → config`.
+`test/architecture_test.dart` fails the build if an import breaks that rule.
+
+### Patterns in use
+
+| Pattern | Where | Why |
+|---|---|---|
+| Composition root | `app_dependencies.dart` | One place chooses concrete classes and per-OS implementations |
+| Dependency injection | Every constructor | Collaborators are passed in, so tests use fakes |
+| Repository | `UsageRepository`, `StatusLineRepository` | Hide where data comes from |
+| Mapper | `SessionRecordMapper` | Keeps the JSON wire format out of the domain |
+| Strategy | `NotificationService`, `AutostartService` per OS | New platform means a new class, not a new `if` |
+| Template method | `CommandNotificationService` | Shared error handling; subclasses name the command |
+| State + observer | `UsageWidgetCubit` with `flutter_bloc` | One immutable state, views rebuild on change |
+| Sealed type | `UsageSnapshot` | The compiler finds every `switch` a new account type must handle |
+| Interface segregation | `SettingsActions` | The settings view sees eight actions, not the whole cubit |
 
 ## Merging sessions
 

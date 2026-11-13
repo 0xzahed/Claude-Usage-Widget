@@ -4,7 +4,8 @@ import 'dart:io';
 
 import 'package:claude_usage_widget/config/app_constants.dart';
 import 'package:claude_usage_widget/config/logger.dart';
-import 'package:claude_usage_widget/data/models/status_payload.dart';
+import 'package:claude_usage_widget/data/models/session_record_mapper.dart';
+import 'package:claude_usage_widget/domain/models/session_record.dart';
 import 'package:path/path.dart' as p;
 
 /// Reads and watches the records folder written by the status line bridge.
@@ -23,14 +24,14 @@ class UsageFileService {
   final Duration pollInterval;
 
   /// Reads every readable record; unreadable files are skipped and logged.
-  Future<List<StatusPayload>> readAll() async {
+  Future<List<SessionRecord>> readAll() async {
     final dir = Directory(directory);
     if (!dir.existsSync()) return const [];
-    final payloads = <StatusPayload>[];
+    final payloads = <SessionRecord>[];
     await for (final entity in dir.list()) {
       if (entity is! File || p.extension(entity.path) != '.json') continue;
       try {
-        final payload = StatusPayload.fromJson(
+        final payload = SessionRecordMapper.fromJson(
           jsonDecode(await entity.readAsString()),
         );
         if (payload != null) payloads.add(payload);

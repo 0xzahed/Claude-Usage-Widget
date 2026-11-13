@@ -44,8 +44,14 @@ tool/         preview renderer, icon and screenshot scripts
 ## Rules
 
 - **State:** one `Cubit` (`UsageWidgetCubit`) with an immutable `Equatable`
-  state. Views contain no logic and no I/O.
-- **Dependencies:** construct services in `main.dart` and inject them.
+  state. Views contain no logic and no I/O. The cubit coordinates; put new
+  rules in a domain class and new mechanics in a collaborator (see
+  `AlertPolicy`, `WindowMorpher`).
+- **Layers:** imports point inwards only, `ui → data → domain → config`.
+  `test/architecture_test.dart` enforces it. JSON parsing belongs in a
+  mapper under `data/models/`, never in a domain model.
+- **Dependencies:** construct services in `app_dependencies.dart` and inject
+  them. Pick per-OS implementations there, not inside the classes.
   Anything that touches a plugin or the OS sits behind an interface in
   `data/services/` so the cubit can be tested with fakes.
 - **Models:** add a new account type as a new `UsageSnapshot` subclass and let

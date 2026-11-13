@@ -103,7 +103,7 @@ class _Content extends StatelessWidget {
             snapshot: state.snapshot,
             now: state.now,
           ),
-          ViewMode.menu => MenuView(state: state, cubit: cubit),
+          ViewMode.menu => MenuView(state: state, actions: cubit),
         },
       ),
     ),

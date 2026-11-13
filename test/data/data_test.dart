@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:claude_usage_widget/data/models/status_payload.dart';
+import 'package:claude_usage_widget/data/models/session_record_mapper.dart';
 import 'package:claude_usage_widget/data/repositories/status_line_repository.dart';
 import 'package:claude_usage_widget/data/repositories/usage_repository.dart';
 import 'package:claude_usage_widget/data/services/claude_settings_service.dart';
@@ -16,9 +16,9 @@ void main() {
   setUp(() => tmp = Directory.systemTemp.createTempSync('data'));
   tearDown(() => tmp.deleteSync(recursive: true));
 
-  group('StatusPayload', () {
+  group('SessionRecordMapper', () {
     test('parses a subscription record', () {
-      final parsed = StatusPayload.fromJson({
+      final parsed = SessionRecordMapper.fromJson({
         'session_id': 's',
         'written_at': 100,
         'rate_limits': {
@@ -32,7 +32,7 @@ void main() {
     });
 
     test('parses gateway spend fields', () {
-      final parsed = StatusPayload.fromJson({
+      final parsed = SessionRecordMapper.fromJson({
         'rate_limits': {
           'spend_limit': {
             'used_percentage': 40,
@@ -46,8 +46,11 @@ void main() {
     });
 
     test('rejects non-objects and tolerates missing fields', () {
-      expect(StatusPayload.fromJson([1]), isNull);
-      expect(StatusPayload.fromJson(<String, Object?>{})!.fiveHour, isNull);
+      expect(SessionRecordMapper.fromJson([1]), isNull);
+      expect(
+        SessionRecordMapper.fromJson(<String, Object?>{})!.fiveHour,
+        isNull,
+      );
     });
   });
 

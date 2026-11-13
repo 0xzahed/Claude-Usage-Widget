@@ -1,29 +1,11 @@
 import 'dart:io';
 
 import 'package:claude_usage_widget/config/app_constants.dart';
+import 'package:claude_usage_widget/data/services/process_runner.dart';
 import 'package:path/path.dart' as p;
 
 /// Starts the app at login, using each OS's native mechanism.
 abstract interface class AutostartService {
-  /// Picks the implementation for the current OS.
-  factory AutostartService.forPlatform() {
-    final exe = Platform.resolvedExecutable;
-    final home = Platform.environment['HOME'] ?? '.';
-    if (Platform.isWindows) return WindowsAutostartService(exe);
-    if (Platform.isMacOS) {
-      return FileAutostartService(
-        file: File(p.join(home, 'Library', 'LaunchAgents', '$_macLabel.plist')),
-        content: _launchAgent(exe),
-      );
-    }
-    final config =
-        Platform.environment['XDG_CONFIG_HOME'] ?? p.join(home, '.config');
-    return FileAutostartService(
-      file: File(p.join(config, 'autostart', 'claude-usage-widget.desktop')),
-      content: _desktopEntry(exe),
-    );
-  }
-
   /// Whether the app starts at login.
   Future<bool> isEnabled();
 
@@ -31,27 +13,42 @@ abstract interface class AutostartService {
   Future<void> setEnabled({required bool enabled});
 }
 
-const _macLabel = 'dev.usagewidget.claude-usage-widget';
-
-String _desktopEntry(String exe) =>
-    '[Desktop Entry]\n'
-    'Type=Application\n'
-    'Name=${AppConstants.appName}\n'
-    'Exec="$exe"\n'
-    'X-GNOME-Autostart-enabled=true\n';
-
-String _launchAgent(String exe) =>
-    '<?xml version="1.0" encoding="UTF-8"?>\n'
-    '<plist version="1.0"><dict>\n'
-    '<key>Label</key><string>$_macLabel</string>\n'
-    '<key>ProgramArguments</key><array><string>$exe</string></array>\n'
-    '<key>RunAtLoad</key><true/>\n'
-    '</dict></plist>\n';
-
-/// Linux (XDG autostart) and macOS (LaunchAgent): a file's presence is the flag.
+/// Autostart where a file's presence is the switch: Linux (XDG autostart)
+/// and macOS (LaunchAgent).
 class FileAutostartService implements AutostartService {
   /// Creates a service that writes [content] to [file] when enabled.
   FileAutostartService({required this.file, required this.content});
+
+  /// Linux: a desktop entry for [executable] under [configHome]`/autostart`.
+  factory FileAutostartService.xdg({
+    required String executable,
+    required String configHome,
+  }) => FileAutostartService(
+    file: File(p.join(configHome, 'autostart', 'claude-usage-widget.desktop')),
+    content:
+        '[Desktop Entry]\n'
+        'Type=Application\n'
+        'Name=${AppConstants.appName}\n'
+        'Exec="$executable"\n'
+        'X-GNOME-Autostart-enabled=true\n',
+  );
+
+  /// macOS: a LaunchAgent for [executable] under [home]`/Library`.
+  factory FileAutostartService.launchAgent({
+    required String executable,
+    required String home,
+  }) => FileAutostartService(
+    file: File(p.join(home, 'Library', 'LaunchAgents', '$_macLabel.plist')),
+    content:
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<plist version="1.0"><dict>\n'
+        '<key>Label</key><string>$_macLabel</string>\n'
+        '<key>ProgramArguments</key><array><string>$executable</string></array>\n'
+        '<key>RunAtLoad</key><true/>\n'
+        '</dict></plist>\n',
+  );
+
+  static const _macLabel = 'dev.usagewidget.claude-usage-widget';
 
   /// The autostart file.
   final File file;
@@ -75,36 +72,40 @@ class FileAutostartService implements AutostartService {
 
 /// Windows: a value under the current user's `Run` registry key.
 class WindowsAutostartService implements AutostartService {
-  /// Creates a service that registers [executable].
-  WindowsAutostartService(this.executable);
+  /// Creates a service that registers [executable], using [run] for `reg`.
+  WindowsAutostartService(this.executable, {this._run = runProcess});
 
   /// The executable to start.
   final String executable;
+
+  final ProcessRunner _run;
 
   static const _key = r'HKCU\Software\Microsoft\Windows\CurrentVersion\Run';
   static const _name = 'ClaudeUsageWidget';
 
   @override
   Future<bool> isEnabled() async {
-    final result = await Process.run('reg', ['query', _key, '/v', _name]);
+    final result = await _run('reg', ['query', _key, '/v', _name]);
     return result.exitCode == 0;
   }
 
   @override
   Future<void> setEnabled({required bool enabled}) async {
-    final args = enabled
-        ? [
-            'add',
-            _key,
-            '/v',
-            _name,
-            '/t',
-            'REG_SZ',
-            '/d',
-            '"$executable"',
-            '/f',
-          ]
-        : ['delete', _key, '/v', _name, '/f'];
-    await Process.run('reg', args);
+    await _run(
+      'reg',
+      enabled
+          ? [
+              'add',
+              _key,
+              '/v',
+              _name,
+              '/t',
+              'REG_SZ',
+              '/d',
+              '"$executable"',
+              '/f',
+            ]
+          : ['delete', _key, '/v', _name, '/f'],
+    );
   }
 }

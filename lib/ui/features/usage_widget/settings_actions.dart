@@ -1,0 +1,29 @@
+/// The actions the settings view can trigger.
+///
+/// The view depends on this narrow interface rather than on the whole cubit,
+/// so it cannot reach state or behaviour it has no business with.
+abstract interface class SettingsActions {
+  /// Closes the settings view.
+  Future<void> closeMenu();
+
+  /// Registers or removes the bridge as the status line command.
+  Future<void> toggleStatusLine();
+
+  /// Keeps the widget above other windows, or lets them cover it.
+  Future<void> toggleAlwaysOnTop();
+
+  /// Turns launch at login on or off.
+  Future<void> toggleStartup();
+
+  /// Previews a new glass strength while the slider moves.
+  void setOpacity(double value);
+
+  /// Persists the current glass strength.
+  Future<void> saveOpacity();
+
+  /// Shows or hides the window.
+  Future<void> toggleVisibility();
+
+  /// Quits the app.
+  Future<void> quit();
+}

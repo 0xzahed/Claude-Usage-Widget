@@ -3,20 +3,20 @@ import 'dart:async';
 import 'package:claude_usage_widget/config/app_constants.dart';
 import 'package:claude_usage_widget/ui/core/glass_theme.dart';
 import 'package:claude_usage_widget/ui/core/widgets/glass_tile.dart';
-import 'package:claude_usage_widget/ui/features/usage_widget/cubit/usage_widget_cubit.dart';
 import 'package:claude_usage_widget/ui/features/usage_widget/cubit/usage_widget_state.dart';
+import 'package:claude_usage_widget/ui/features/usage_widget/settings_actions.dart';
 import 'package:flutter/cupertino.dart';
 
 /// Settings, shown on right-click: grouped rows with switches and a slider.
 class MenuView extends StatelessWidget {
-  /// Creates the settings for [state]; actions are sent to [cubit].
-  const MenuView({required this.state, required this.cubit, super.key});
+  /// Creates the settings for [state]; actions are sent to [actions].
+  const MenuView({required this.state, required this.actions, super.key});
 
   /// Current state, used for values.
   final UsageWidgetState state;
 
   /// Receives the actions.
-  final UsageWidgetCubit cubit;
+  final SettingsActions actions;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class MenuView extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              _TextAction(label: 'Done', onTap: cubit.closeMenu),
+              _TextAction(label: 'Done', onTap: actions.closeMenu),
             ],
           ),
           const SizedBox(height: 10),
@@ -54,29 +54,29 @@ class MenuView extends StatelessWidget {
                       label: 'Status Line',
                       trailing: _Toggle(
                         value: state.statusLineInstalled,
-                        onChanged: cubit.toggleStatusLine,
+                        onChanged: actions.toggleStatusLine,
                       ),
                     ),
                     _MenuRow(
                       label: 'Always on Top',
                       trailing: _Toggle(
                         value: state.alwaysOnTop,
-                        onChanged: cubit.toggleAlwaysOnTop,
+                        onChanged: actions.toggleAlwaysOnTop,
                       ),
                     ),
                     _MenuRow(
                       label: 'Open at Login',
                       trailing: _Toggle(
                         value: state.startupEnabled,
-                        onChanged: cubit.toggleStartup,
+                        onChanged: actions.toggleStartup,
                       ),
                     ),
                     _MenuRow(
                       label: 'Opacity',
                       trailing: _OpacitySlider(
                         value: state.opacity,
-                        onChanged: cubit.setOpacity,
-                        onChangeEnd: cubit.saveOpacity,
+                        onChanged: actions.setOpacity,
+                        onChangeEnd: actions.saveOpacity,
                       ),
                     ),
                   ],
@@ -87,12 +87,12 @@ class MenuView extends StatelessWidget {
                     if (state.trayAvailable)
                       _MenuRow(
                         label: 'Hide to Tray',
-                        onTap: cubit.toggleVisibility,
+                        onTap: actions.toggleVisibility,
                       ),
                     _MenuRow(
                       label: 'Quit',
                       destructive: true,
-                      onTap: cubit.quit,
+                      onTap: actions.quit,
                     ),
                   ],
                 ),

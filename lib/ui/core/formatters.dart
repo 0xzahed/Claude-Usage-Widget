@@ -1,3 +1,20 @@
+import 'package:claude_usage_widget/domain/models/usage_snapshot.dart';
+
+/// One-line summary of [snapshot] as of [now], for tooltips.
+String formatSummary(UsageSnapshot snapshot, DateTime now) {
+  String percent(double? value) => value == null ? '--' : '${value.round()}%';
+  return switch (snapshot) {
+    NoUsage() => 'Claude Usage',
+    SubscriptionUsage(:final fiveHour, :final sevenDay) =>
+      'Claude · 5h ${percent(fiveHour?.percentAt(now))}'
+          ' · 7d ${percent(sevenDay?.percentAt(now))}',
+    GatewayUsage(:final spend) =>
+      'Claude · spend ${percent(spend.percentAt(now))}',
+    ApiUsage(:final todayCostUsd) =>
+      'Claude · ~${formatMoney(todayCostUsd)} today',
+  };
+}
+
 /// Formats a time until reset, such as "2h 30m" or "2d 21h".
 String formatDuration(Duration remaining) {
   if (remaining.inDays >= 1) {

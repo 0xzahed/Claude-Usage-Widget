@@ -1,5 +1,5 @@
-import 'package:claude_usage_widget/data/models/status_payload.dart';
 import 'package:claude_usage_widget/domain/models/rate_limit.dart';
+import 'package:claude_usage_widget/domain/models/session_record.dart';
 import 'package:claude_usage_widget/domain/models/usage_snapshot.dart';
 import 'package:usage_bridge/bridge.dart' show dayKey, keepDays;
 
@@ -14,7 +14,7 @@ final class AggregateUsage {
   const AggregateUsage();
 
   /// Aggregates [payloads] as of [now].
-  UsageSnapshot call(List<StatusPayload> payloads, DateTime now) {
+  UsageSnapshot call(List<SessionRecord> payloads, DateTime now) {
     final cutoff = now.subtract(const Duration(days: keepDays));
     final fresh = payloads.where((p) => p.writtenAt.isAfter(cutoff)).toList();
     if (fresh.isEmpty) return const NoUsage();

@@ -172,6 +172,16 @@ void main() {
       expect(formatDuration(const Duration(seconds: 20)), '1m');
     });
 
+    test('summary per account type', () {
+      expect(
+        formatSummary(subscription(), testNow),
+        'Claude · 5h 24% · 7d 78%',
+      );
+      expect(formatSummary(apiUsage, testNow), r'Claude · ~$4.20 today');
+      expect(formatSummary(gatewayUsage, testNow), 'Claude · spend 40%');
+      expect(formatSummary(const NoUsage(), testNow), 'Claude Usage');
+    });
+
     test('ages and money', () {
       expect(formatAge(const Duration(minutes: 12)), '12m ago');
       expect(formatAge(const Duration(hours: 3, minutes: 5)), '3h ago');

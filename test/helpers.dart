@@ -1,8 +1,8 @@
-import 'package:claude_usage_widget/data/models/status_payload.dart';
 import 'package:claude_usage_widget/domain/models/rate_limit.dart';
+import 'package:claude_usage_widget/domain/models/session_record.dart';
 
 /// Builds a payload for tests with sensible defaults.
-StatusPayload payload({
+SessionRecord payload({
   String id = 's1',
   DateTime? writtenAt,
   String? day,
@@ -14,7 +14,7 @@ StatusPayload payload({
   double? spendLimit,
   double? cost,
   double? context,
-}) => StatusPayload(
+}) => SessionRecord(
   sessionId: id,
   writtenAt: writtenAt ?? DateTime(2026, 11, 13, 12),
   day: day,

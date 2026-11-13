@@ -95,6 +95,38 @@ void main() {
       expect(fired, [80, 95, 80]);
     });
 
+    test('evaluates every limit of a snapshot and words the alert', () {
+      final policy = AlertPolicy();
+      final snapshot = SubscriptionUsage(
+        fiveHour: RateLimit(
+          usedPercent: 96,
+          resetsAt: now.add(const Duration(hours: 1)),
+        ),
+        sevenDay: RateLimit(
+          usedPercent: 82,
+          resetsAt: now.add(const Duration(days: 1)),
+        ),
+      );
+      final alerts = policy.evaluate(snapshot, now);
+      expect(alerts.map((a) => a.limitName), ['5-hour', '7-day']);
+      expect(alerts.first.title, 'Claude usage: 5-hour at 96%');
+      expect(alerts.first.message, 'Almost at your limit.');
+      expect(alerts.last.message, 'You have used over 80%.');
+      // Nothing new on the same data.
+      expect(policy.evaluate(snapshot, now), isEmpty);
+    });
+
+    test('a window that has reset does not alert', () {
+      final expired = SubscriptionUsage(
+        fiveHour: RateLimit(
+          usedPercent: 99,
+          resetsAt: now.subtract(const Duration(minutes: 1)),
+        ),
+      );
+      expect(AlertPolicy().evaluate(expired, now), isEmpty);
+      expect(AlertPolicy().evaluate(const NoUsage(), now), isEmpty);
+    });
+
     test('tracks each limit separately', () {
       final policy = AlertPolicy();
       expect(policy.check('5-hour', 85), isNotNull);
