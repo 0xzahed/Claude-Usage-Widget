@@ -65,6 +65,6 @@ Next steps:
   3. Restart Claude Code and send a message
   Optional: right-click -> "Launch at startup"
 
-Uninstall: ./install_linux.sh --uninstall
+Update: install again. Uninstall: see the README.
 MSG
 case ":$PATH:" in *":$BIN_DIR:"*) ;; *) echo "Note: add $BIN_DIR to your PATH to use the 'claude-usage-widget' command." ;; esac

@@ -11,10 +11,21 @@ jobs:
         include:
           - { os: windows-latest, name: windows }
           - { os: macos-latest, name: macos }
-          - { os: ubuntu-latest, name: linux }
+          # An older Ubuntu, so the package runs on more distributions: a
+          # binary needs a glibc at least as new as the one it was built with.
+          - { os: ubuntu-22.04, name: linux }
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+      - name: Tag must match the pubspec version
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: bash
+        run: |
+          version="$(sed -n 's/^version: *\([^+]*\).*/\1/p' pubspec.yaml)"
+          if [ "v$version" != "$GITHUB_REF_NAME" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match pubspec version $version"
+            exit 1
+          fi
       - uses: subosito/flutter-action@v2
         # Pinned to the version the project is developed and checked on.
         with: { channel: stable, flutter-version: 3.47.9 }
@@ -62,3 +73,32 @@ jobs:
         with:
           name: ${{ matrix.name }}
           path: claude-usage-widget-*
+
+  # Publishes the three packages as a GitHub Release when a v* tag is pushed.
+  # Asset names carry no version so releases/latest/download/<name> always
+  # points at the newest one; install.sh relies on that.
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { path: dist, merge-multiple: true }
+      - name: Checksums
+        run: cd dist && sha256sum claude-usage-widget-* > SHA256SUMS && cat SHA256SUMS
+      - name: Release notes from the changelog
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          awk -v v="$version" '
+            /^## / { on = ($2 == v); next }
+            on
+          ' CHANGELOG.md > notes.md
+          [ -s notes.md ] || echo "Release $GITHUB_REF_NAME" > notes.md
+          cat notes.md
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" dist/* --title "$GITHUB_REF_NAME" --notes-file notes.md --verify-tag

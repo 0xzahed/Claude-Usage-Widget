@@ -16,7 +16,8 @@ accounts.
 Enable the "AppIndicator and KStatusNotifierItem Support" extension.
 
 **A generic gear icon in the dock**
-Run `./install_linux.sh` again and relaunch from the app menu.
+Run the install command again (or `./install_linux.sh` from a source checkout)
+and relaunch from the app menu.
 
 **I already had a status line**
 It is saved when you turn **Status Line** on and restored when you turn it off.

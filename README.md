@@ -44,7 +44,25 @@ widget keeps the answer on screen, so you see a limit coming before you hit it.
 > **Status:** Linux is tested. The macOS and Windows packages build in CI but
 > have not been run by anyone yet. Help testing those is very welcome.
 
-### Linux (from source)
+### Linux
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/jihanurrahman33/Claude-Usage-Widget/main/install.sh | bash
+```
+
+This downloads the latest release, checks its SHA-256 checksum and installs it
+for your user only (no `sudo`). It needs an x86_64 system with GTK 3; for the
+tray icon and alerts also install `libayatana-appindicator3-1` and
+`libnotify-bin`.
+
+Then:
+
+1. Open **Claude Usage Widget** from your app menu.
+2. Right-click the widget, and turn on **Status Line**.
+3. Restart Claude Code and send a message.
+
+<details>
+<summary>Build from source instead</summary>
 
 You need [Flutter](https://docs.flutter.dev/get-started/install/linux) and the
 usual Linux desktop build tools.
@@ -56,19 +74,37 @@ cd Claude-Usage-Widget
 ./build_linux.sh && ./install_linux.sh
 ```
 
-Then:
-
-1. Open **Claude Usage Widget** from your app menu.
-2. Right-click the widget, and turn on **Status Line**.
-3. Restart Claude Code and send a message.
-
-To remove it, turn **Status Line** off, then run `./install_linux.sh --uninstall`.
+</details>
 
 ### macOS and Windows
 
-Packages are produced by the [build workflow](.github/workflows/build.yml).
-They compile, but nobody has run them yet; see
+Download the `.dmg` or `.zip` from the
+[latest release](https://github.com/jihanurrahman33/Claude-Usage-Widget/releases/latest).
+These packages compile in CI, but nobody has run them yet; see
 [docs/development.md](docs/development.md).
+
+## Update
+
+The widget never goes online, so it does not update itself or check for new
+versions. Watch the repository's releases (**Watch → Custom → Releases**) to
+hear about them.
+
+- **Linux:** run the install command again. It replaces the app, keeps your
+  settings and status line, and restarts the widget if it was running.
+  To pin a version: `... | bash -s -- --version v0.1.0`.
+- **Built from source:** `git pull`, then `./build_linux.sh && ./install_linux.sh`.
+- **macOS and Windows:** quit the widget, download the latest release and
+  replace the old app or folder.
+
+## Uninstall
+
+Turn **Status Line** off first so your previous status line is restored, then:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/jihanurrahman33/Claude-Usage-Widget/main/install.sh | bash -s -- --uninstall
+```
+
+From a source checkout, `./install_linux.sh --uninstall` does the same.
 
 ## Use
 
