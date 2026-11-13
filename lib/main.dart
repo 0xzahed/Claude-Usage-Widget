@@ -26,6 +26,7 @@ Future<void> main() async {
   final window = DesktopWindowService();
   await window.init(
     size: WidgetLayout.windowSizeFor(WidgetLayout.pill),
+    alwaysOnTop: preferences.alwaysOnTop,
     position: preferences.windowPosition,
   );
 

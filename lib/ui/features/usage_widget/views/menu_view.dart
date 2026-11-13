@@ -58,6 +58,13 @@ class MenuView extends StatelessWidget {
                       ),
                     ),
                     _MenuRow(
+                      label: 'Always on Top',
+                      trailing: _Toggle(
+                        value: state.alwaysOnTop,
+                        onChanged: cubit.toggleAlwaysOnTop,
+                      ),
+                    ),
+                    _MenuRow(
                       label: 'Open at Login',
                       trailing: _Toggle(
                         value: state.startupEnabled,

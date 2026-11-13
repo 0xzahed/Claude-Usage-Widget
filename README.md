@@ -33,6 +33,7 @@ widget keeps the answer on screen, so you see a limit coming before you hit it.
   line. It makes no network calls and never reads your credentials.
 - **Alerts** when a limit crosses 80% and 95%.
 - **Light and dark**, following your system theme.
+- **Always on top**, with a switch to turn it off.
 - **Stays out of the way.** A pill that expands on click, with a tray icon,
   launch at login and an opacity slider.
 
@@ -40,8 +41,8 @@ widget keeps the answer on screen, so you see a limit coming before you hit it.
 
 ## Install
 
-> **Status:** Linux is tested. The macOS and Windows code is written but has
-> not been built or run yet. Help testing those is very welcome.
+> **Status:** Linux is tested. The macOS and Windows packages build in CI but
+> have not been run by anyone yet. Help testing those is very welcome.
 
 ### Linux (from source)
 
@@ -66,7 +67,8 @@ To remove it, turn **Status Line** off, then run `./install_linux.sh --uninstall
 ### macOS and Windows
 
 Packages are produced by the [build workflow](.github/workflows/build.yml).
-They are untested; see [docs/development.md](docs/development.md).
+They compile, but nobody has run them yet; see
+[docs/development.md](docs/development.md).
 
 ## Use
 

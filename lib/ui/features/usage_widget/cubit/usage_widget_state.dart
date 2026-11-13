@@ -26,6 +26,7 @@ class UsageWidgetState extends Equatable {
     this.startupEnabled = false,
     this.trayAvailable = false,
     this.windowVisible = true,
+    this.alwaysOnTop = true,
     this.errorMessage,
   });
 
@@ -53,6 +54,9 @@ class UsageWidgetState extends Equatable {
   /// Whether the window is shown.
   final bool windowVisible;
 
+  /// Whether the window stays above other windows.
+  final bool alwaysOnTop;
+
   /// Last user-facing error, or null.
   final String? errorMessage;
 
@@ -68,6 +72,7 @@ class UsageWidgetState extends Equatable {
     bool? startupEnabled,
     bool? trayAvailable,
     bool? windowVisible,
+    bool? alwaysOnTop,
     String? errorMessage,
     bool clearError = false,
   }) => UsageWidgetState(
@@ -79,6 +84,7 @@ class UsageWidgetState extends Equatable {
     startupEnabled: startupEnabled ?? this.startupEnabled,
     trayAvailable: trayAvailable ?? this.trayAvailable,
     windowVisible: windowVisible ?? this.windowVisible,
+    alwaysOnTop: alwaysOnTop ?? this.alwaysOnTop,
     errorMessage: clearError ? null : errorMessage ?? this.errorMessage,
   );
 
@@ -92,6 +98,7 @@ class UsageWidgetState extends Equatable {
     startupEnabled,
     trayAvailable,
     windowVisible,
+    alwaysOnTop,
     errorMessage,
   ];
 }

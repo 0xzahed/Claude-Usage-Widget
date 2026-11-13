@@ -161,6 +161,7 @@ void main() {
       ),
     );
     expect(find.text('Hide to Tray'), findsNothing);
+    expect(find.text('Always on Top'), findsOneWidget);
     expect(find.text('settings.json is invalid'), findsOneWidget);
   });
 

@@ -39,6 +39,7 @@ class UsageWidgetCubit extends Cubit<UsageWidgetState> {
          UsageWidgetState(
            now: clock(),
            opacity: preferences.opacity ?? AppConstants.defaultOpacity,
+           alwaysOnTop: preferences.alwaysOnTop,
          ),
        );
 
@@ -205,6 +206,14 @@ class UsageWidgetCubit extends Cubit<UsageWidgetState> {
     } on FileSystemException catch (e) {
       emit(state.copyWith(errorMessage: 'Cannot write settings: ${e.message}'));
     }
+  }
+
+  /// Keeps the widget above other windows, or lets them cover it.
+  Future<void> toggleAlwaysOnTop() async {
+    final enabled = !state.alwaysOnTop;
+    await _window.setAlwaysOnTop(enabled: enabled);
+    emit(state.copyWith(alwaysOnTop: enabled));
+    await _preferences.saveAlwaysOnTop(value: enabled);
   }
 
   /// Turns launch at startup on or off.

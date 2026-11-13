@@ -12,6 +12,7 @@ class PreferencesService {
   static const _x = 'window_x';
   static const _y = 'window_y';
   static const _opacity = 'opacity';
+  static const _alwaysOnTop = 'always_on_top';
 
   /// Last saved window position, or null on first run.
   Offset? get windowPosition {
@@ -31,4 +32,11 @@ class PreferencesService {
 
   /// Saves the card opacity.
   Future<void> saveOpacity(double value) => _prefs.setDouble(_opacity, value);
+
+  /// Whether the widget stays above other windows; on unless turned off.
+  bool get alwaysOnTop => _prefs.getBool(_alwaysOnTop) ?? true;
+
+  /// Saves the always-on-top choice.
+  Future<void> saveAlwaysOnTop({required bool value}) =>
+      _prefs.setBool(_alwaysOnTop, value);
 }

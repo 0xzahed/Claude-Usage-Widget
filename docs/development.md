@@ -37,11 +37,13 @@ Add `--enable-impeller` to render with the app's real renderer.
 
 - Linux: `./build_linux.sh`, then `./install_linux.sh`.
 - macOS and Windows: `.github/workflows/build.yml` (run it manually or push a
-  `v*` tag). These builds are **untested**. The bridge must sit next to the
+  `v*` tag). These builds compile but have **not been run**. The bridge must sit next to the
   app executable.
 
 ## Platform notes
 
+- Linux uses the X11 backend (XWayland on Wayland sessions), because Wayland
+  cannot keep a window above others or restore its position.
 - Linux tray needs `libayatana-appindicator3-dev`; GNOME needs the
   AppIndicator extension to show it.
 - macOS: App Sandbox is off so the app can read the Claude config folder.

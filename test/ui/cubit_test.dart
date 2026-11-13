@@ -64,6 +64,8 @@ void main() {
     when(() => window.moved).thenAnswer((_) => const Stream<Offset>.empty());
     when(() => window.setSize(any())).thenAnswer((_) async {});
     when(() => window.dispose()).thenAnswer((_) async {});
+    when(() => window.setAlwaysOnTop(enabled: any(named: 'enabled')))
+        .thenAnswer((_) async {});
     when(() => tray.start(any())).thenAnswer((_) async => true);
     when(
       () => tray.updateMenu(
@@ -181,6 +183,25 @@ void main() {
     ],
     verify: (_) => expect(preferences.opacity, 0.5),
   );
+
+  test(
+    'always on top is on by default, toggles the window and is saved',
+    () async {
+      final cubit = make();
+      expect(cubit.state.alwaysOnTop, isTrue);
+      await cubit.toggleAlwaysOnTop();
+      expect(cubit.state.alwaysOnTop, isFalse);
+      verify(() => window.setAlwaysOnTop(enabled: false)).called(1);
+      expect(preferences.alwaysOnTop, isFalse);
+      await cubit.close();
+    },
+  );
+
+  test('the glass starts at its clearest setting', () async {
+    final cubit = make();
+    expect(cubit.state.opacity, 0.5);
+    await cubit.close();
+  });
 
   blocTest<UsageWidgetCubit, UsageWidgetState>(
     'a failing settings write is shown as an error, not thrown',

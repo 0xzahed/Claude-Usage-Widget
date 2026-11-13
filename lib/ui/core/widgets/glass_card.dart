@@ -21,6 +21,17 @@ class GlassCard extends StatelessWidget {
   /// Corner radius; on the 54 px pill this makes a capsule.
   static const radius = 26.0;
 
+  /// A soft halo in the opposite tone of the text, inherited by all text on
+  /// the card. The clearer the glass, the stronger it gets, so text stays
+  /// readable when whatever is behind the window shows through.
+  List<Shadow>? _legibilityShadow(GlassTheme glass) {
+    final strength = ((1 - opacity) * 1.1).clamp(0.0, 0.55);
+    if (strength <= 0) return null;
+    final lightText = glass.label.computeLuminance() > 0.5;
+    final tone = lightText ? const Color(0xFF000000) : const Color(0xFFFFFFFF);
+    return [Shadow(color: tone.withValues(alpha: strength), blurRadius: 4)];
+  }
+
   @override
   Widget build(BuildContext context) {
     final glass = GlassTheme.of(context);
@@ -29,7 +40,10 @@ class GlassCard extends StatelessWidget {
       child: ClipRSuperellipse(
         borderRadius: BorderRadius.circular(radius),
         child: DefaultTextStyle(
-          style: AppText.style(13, color: glass.secondary),
+          style: AppText.style(
+            13,
+            color: glass.secondary,
+          ).copyWith(shadows: _legibilityShadow(glass)),
           child: child,
         ),
       ),

@@ -27,9 +27,9 @@ abstract final class AppConstants {
   /// Usage percents that trigger a desktop notification, ascending.
   static const alertPercents = [80.0, 95.0];
 
-  /// Default strength of the glass fill, from [minOpacity] to 1.
-  static const defaultOpacity = 0.9;
-
   /// Lowest glass strength the slider allows.
   static const minOpacity = 0.5;
+
+  /// Default strength of the glass fill: the clearest setting.
+  static const defaultOpacity = minOpacity;
 }

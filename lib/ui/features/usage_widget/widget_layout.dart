@@ -22,10 +22,10 @@ abstract final class WidgetLayout {
   static const emptyDetails = Size(264, 164);
 
   /// Settings, with the tray entry.
-  static const menuWithTray = Size(264, 272);
+  static const menuWithTray = Size(264, 309);
 
   /// Settings, without the tray entry.
-  static const menuWithoutTray = Size(264, 236);
+  static const menuWithoutTray = Size(264, 273);
 
   /// Size of the card for [state].
   static Size cardSize(UsageWidgetState state) => switch (state.viewMode) {

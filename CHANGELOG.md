@@ -8,5 +8,7 @@ First version.
 - Gateway spend and API-key cost views.
 - Status line bridge with one-switch install and restore.
 - Tray icon, launch at login, alerts at 80% and 95%, opacity slider.
+- Always on Top switch; on Linux the widget runs on X11 so it works.
+- Glass starts at its clearest setting, with a text halo for legibility.
 - Light and dark themes.
-- Linux tested; macOS and Windows untested.
+- Linux tested; macOS and Windows build in CI but have not been run.

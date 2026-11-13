@@ -83,7 +83,9 @@ overflow in `test/ui/views_test.dart` is a real overflow.
   sessions are merged.
 - CI pins Flutter 3.47.9. Newer stable releases add lints that fail
   `flutter analyze`; bump the pin and fix them in the same change.
-- macOS and Windows code paths are untested. Say so in anything you write
-  about them.
+- macOS and Windows build in CI but have never been run. Say so in anything
+  you write about them.
+- Linux prefers the X11 backend (`linux/runner/main.cc`): Wayland cannot keep
+  a window above others or restore its position.
 - Regenerate README images with `tool/make_screenshots.py` after visual
   changes.

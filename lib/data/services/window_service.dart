@@ -7,7 +7,14 @@ import 'package:window_manager/window_manager.dart';
 /// The native window: frameless, always on top, draggable.
 abstract interface class WindowService {
   /// Creates the window at [size], placing it at [position] if given.
-  Future<void> init({required Size size, Offset? position});
+  Future<void> init({
+    required Size size,
+    required bool alwaysOnTop,
+    Offset? position,
+  });
+
+  /// Keeps the window above other windows, or lets it be covered.
+  Future<void> setAlwaysOnTop({required bool enabled});
 
   /// Resizes the window.
   Future<void> setSize(Size size);
@@ -36,13 +43,17 @@ class DesktopWindowService with WindowListener implements WindowService {
   Stream<Offset> get moved => _moved.stream;
 
   @override
-  Future<void> init({required Size size, Offset? position}) async {
+  Future<void> init({
+    required Size size,
+    required bool alwaysOnTop,
+    Offset? position,
+  }) async {
     await windowManager.ensureInitialized();
     windowManager.addListener(this);
     await windowManager.waitUntilReadyToShow(
       WindowOptions(
         size: size,
-        alwaysOnTop: true,
+        alwaysOnTop: alwaysOnTop,
         skipTaskbar: true,
         titleBarStyle: TitleBarStyle.hidden,
         backgroundColor: const Color(0x00000000),
@@ -53,6 +64,10 @@ class DesktopWindowService with WindowListener implements WindowService {
       },
     );
   }
+
+  @override
+  Future<void> setAlwaysOnTop({required bool enabled}) =>
+      windowManager.setAlwaysOnTop(enabled);
 
   @override
   Future<void> setSize(Size size) => windowManager.setSize(size);
