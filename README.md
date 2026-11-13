@@ -49,7 +49,7 @@ You need [Flutter](https://docs.flutter.dev/get-started/install/linux) and the
 usual Linux desktop build tools.
 
 ```bash
-sudo apt install libayatana-appindicator3-dev libnotify-dev   # tray icon
+sudo apt install libgtk-3-dev libx11-dev libxi-dev libayatana-appindicator3-dev libnotify-dev
 git clone https://github.com/jihanurrahman33/Claude-Usage-Widget.git
 cd Claude-Usage-Widget
 ./build_linux.sh && ./install_linux.sh

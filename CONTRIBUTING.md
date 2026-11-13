@@ -6,7 +6,7 @@ requests are all welcome.
 ## Setup
 
 1. Install [Flutter](https://docs.flutter.dev/get-started/install) (stable).
-2. On Linux: `sudo apt install libayatana-appindicator3-dev libnotify-dev`.
+2. On Linux: `sudo apt install libgtk-3-dev libx11-dev libxi-dev libayatana-appindicator3-dev libnotify-dev`.
 3. `flutter pub get`
 
 See [docs/development.md](docs/development.md) for running, testing and
