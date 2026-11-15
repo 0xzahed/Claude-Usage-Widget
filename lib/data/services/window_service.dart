@@ -56,10 +56,12 @@ class DesktopWindowService with WindowListener implements WindowService {
         alwaysOnTop: alwaysOnTop,
         skipTaskbar: true,
         titleBarStyle: TitleBarStyle.hidden,
+        windowButtonVisibility: false,
         backgroundColor: const Color(0x00000000),
       ),
       () async {
         if (position != null) await windowManager.setPosition(position);
+        await windowManager.setHasShadow(false);
         await windowManager.show();
       },
     );

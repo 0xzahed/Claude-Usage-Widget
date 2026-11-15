@@ -232,6 +232,8 @@ ThemeData buildAppTheme(Brightness brightness) => ThemeData(
   brightness: brightness,
   useMaterial3: true,
   fontFamily: AppText.family,
+  scaffoldBackgroundColor: Colors.transparent,
+  canvasColor: Colors.transparent,
   extensions: [
     if (brightness == Brightness.dark) GlassTheme.dark else GlassTheme.light,
   ],

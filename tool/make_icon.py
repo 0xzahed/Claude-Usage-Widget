@@ -84,6 +84,20 @@ def main():
     canvas.alpha_composite(icon)
     canvas.resize((SIZE, SIZE), Image.LANCZOS).save("assets/icon.png")
 
+    # Generate macOS AppIcon set
+    macos_icons = "macos/Runner/Assets.xcassets/AppIcon.appiconset"
+    sizes = {
+        "app_icon_16.png": 16,
+        "app_icon_32.png": 32,
+        "app_icon_64.png": 64,
+        "app_icon_128.png": 128,
+        "app_icon_256.png": 256,
+        "app_icon_512.png": 512,
+        "app_icon_1024.png": 1024,
+    }
+    for filename, dim in sizes.items():
+        canvas.resize((dim, dim), Image.LANCZOS).save(f"{macos_icons}/{filename}")
+
 
 if __name__ == "__main__":
     main()

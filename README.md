@@ -41,8 +41,32 @@ widget keeps the answer on screen, so you see a limit coming before you hit it.
 
 ## Install
 
-> **Status:** Linux is tested. The macOS and Windows packages build in CI but
-> have not been run by anyone yet. Help testing those is very welcome.
+### macOS
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/jihanurrahman33/Claude-Usage-Widget/main/install.sh | bash
+```
+
+This downloads the latest release `.dmg`, verifies its SHA-256 checksum, installs the app to `/Applications/Claude Usage Widget.app`, and configures necessary permissions.
+
+Then:
+
+1. Open **Claude Usage Widget** from Applications or Spotlight.
+2. Right-click the widget, and turn on **Status Line**.
+3. Restart Claude Code and send a message.
+
+<details>
+<summary>Build from source instead</summary>
+
+You need [Flutter](https://docs.flutter.dev/get-started/install/macos).
+
+```bash
+git clone https://github.com/jihanurrahman33/Claude-Usage-Widget.git
+cd Claude-Usage-Widget
+./build_macos.sh && ./install_macos.sh
+```
+
+</details>
 
 ### Linux
 
@@ -76,12 +100,10 @@ cd Claude-Usage-Widget
 
 </details>
 
-### macOS and Windows
+### Windows
 
-Download the `.dmg` or `.zip` from the
+Download the `.zip` from the
 [latest release](https://github.com/jihanurrahman33/Claude-Usage-Widget/releases/latest).
-These packages compile in CI, but nobody has run them yet; see
-[docs/development.md](docs/development.md).
 
 ## Update
 

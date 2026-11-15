@@ -20,6 +20,7 @@ class UsageWidgetApp extends StatelessWidget {
       theme: buildAppTheme(Brightness.light),
       darkTheme: buildAppTheme(Brightness.dark),
       themeMode: ThemeMode.system,
+      color: Colors.transparent,
       home: const UsageWidgetView(),
     ),
   );
