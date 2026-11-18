@@ -7,17 +7,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 /// Root widget: provides the cubit to the tree.
 class UsageWidgetApp extends StatelessWidget {
   /// Creates the app around an already constructed [cubit].
-  const UsageWidgetApp({required this.cubit, super.key});
+  const UsageWidgetApp({
+    required this.cubit,
+    this.lightGlass = GlassTheme.light,
+    super.key,
+  });
 
   /// The state holder; closed when the app is disposed.
   final UsageWidgetCubit cubit;
+
+  /// Palette for the light appearance on this platform.
+  final GlassTheme lightGlass;
 
   @override
   Widget build(BuildContext context) => BlocProvider.value(
     value: cubit,
     child: MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: buildAppTheme(Brightness.light),
+      theme: buildAppTheme(Brightness.light, lightGlass: lightGlass),
       darkTheme: buildAppTheme(Brightness.dark),
       themeMode: ThemeMode.system,
       color: Colors.transparent,

@@ -10,6 +10,7 @@ import 'package:claude_usage_widget/data/services/notification_service.dart';
 import 'package:claude_usage_widget/data/services/preferences_service.dart';
 import 'package:claude_usage_widget/data/services/tray_service.dart';
 import 'package:claude_usage_widget/data/services/window_service.dart';
+import 'package:claude_usage_widget/domain/models/accent_choice.dart';
 import 'package:claude_usage_widget/domain/models/usage_snapshot.dart';
 import 'package:claude_usage_widget/domain/use_cases/alert_policy.dart';
 import 'package:claude_usage_widget/ui/core/formatters.dart';
@@ -38,6 +39,7 @@ class UsageWidgetCubit extends Cubit<UsageWidgetState>
     required this._tray,
     required this._notifications,
     AlertPolicy? alertPolicy,
+    bool accentPicker = false,
     Duration morphDuration = AppMotion.morph,
     DateTime Function() clock = DateTime.now,
   }) : _preferences = preferences,
@@ -53,6 +55,8 @@ class UsageWidgetCubit extends Cubit<UsageWidgetState>
            now: clock(),
            opacity: preferences.opacity ?? AppConstants.defaultOpacity,
            alwaysOnTop: preferences.alwaysOnTop,
+           accent: accentPicker ? preferences.accent : AccentChoice.claude,
+           accentPickerAvailable: accentPicker,
          ),
        );
 
@@ -184,6 +188,12 @@ class UsageWidgetCubit extends Cubit<UsageWidgetState>
 
   @override
   Future<void> saveOpacity() => _preferences.saveOpacity(state.opacity);
+
+  @override
+  Future<void> setAccent(AccentChoice choice) async {
+    emit(state.copyWith(accent: choice));
+    await _preferences.saveAccent(choice);
+  }
 
   @override
   Future<void> toggleVisibility() async {

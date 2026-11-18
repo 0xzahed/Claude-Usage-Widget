@@ -5,6 +5,7 @@ import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:bloc_test/bloc_test.dart';
+import 'package:claude_usage_widget/domain/models/accent_choice.dart';
 import 'package:claude_usage_widget/ui/core/glass_theme.dart';
 import 'package:claude_usage_widget/ui/core/motion.dart';
 import 'package:claude_usage_widget/ui/features/usage_widget/cubit/usage_widget_cubit.dart';
@@ -56,6 +57,22 @@ void main() {
       viewMode: ViewMode.menu,
       statusLineInstalled: true,
       trayAvailable: true,
+    ),
+    'menu_accent': UsageWidgetState(
+      now: testNow,
+      snapshot: subscription(),
+      viewMode: ViewMode.menu,
+      statusLineInstalled: true,
+      trayAvailable: true,
+      accentPickerAvailable: true,
+      accent: AccentChoice.blue,
+    ),
+    'details_accent': UsageWidgetState(
+      now: testNow,
+      snapshot: subscription(),
+      viewMode: ViewMode.details,
+      accentPickerAvailable: true,
+      accent: AccentChoice.blue,
     ),
   };
 

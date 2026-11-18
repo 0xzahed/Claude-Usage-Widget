@@ -9,6 +9,7 @@ import 'package:claude_usage_widget/data/services/preferences_service.dart';
 import 'package:claude_usage_widget/data/services/tray_service.dart';
 import 'package:claude_usage_widget/data/services/usage_file_service.dart';
 import 'package:claude_usage_widget/data/services/window_service.dart';
+import 'package:claude_usage_widget/ui/core/glass_theme.dart';
 import 'package:claude_usage_widget/ui/features/usage_widget/cubit/usage_widget_cubit.dart';
 import 'package:path/path.dart' as p;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,6 +26,7 @@ class AppDependencies {
     required this.preferences,
     required this.window,
     required this.cubit,
+    this.lightGlass = GlassTheme.light,
   });
 
   /// User preferences.
@@ -35,6 +37,9 @@ class AppDependencies {
 
   /// The widget's state holder.
   final UsageWidgetCubit cubit;
+
+  /// Palette for the light appearance on this platform.
+  final GlassTheme lightGlass;
 
   /// Builds the object graph for the current platform and [environment].
   static Future<AppDependencies> create({
@@ -59,11 +64,13 @@ class AppDependencies {
       window: window,
       tray: SystemTrayService(),
       notifications: _notifications(),
+      accentPicker: Platform.isLinux,
     );
     return AppDependencies(
       preferences: preferences,
       window: window,
       cubit: cubit,
+      lightGlass: Platform.isLinux ? GlassTheme.linuxLight : GlassTheme.light,
     );
   }
 
