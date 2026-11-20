@@ -30,6 +30,8 @@ class UsageWidgetState extends Equatable {
     this.alwaysOnTop = true,
     this.accent = AccentChoice.claude,
     this.accentPickerAvailable = false,
+    this.autoUpdate = true,
+    this.availableUpdate,
     this.errorMessage,
   });
 
@@ -65,6 +67,11 @@ class UsageWidgetState extends Equatable {
 
   /// Whether the settings offer the accent colour picker.
   final bool accentPickerAvailable;
+  /// Whether the app checks for and installs new releases.
+  final bool autoUpdate;
+
+  /// Version of a newer release that is ready to install, or null.
+  final String? availableUpdate;
 
   /// Last user-facing error, or null.
   final String? errorMessage;
@@ -84,6 +91,8 @@ class UsageWidgetState extends Equatable {
     bool? alwaysOnTop,
     AccentChoice? accent,
     bool? accentPickerAvailable,
+    bool? autoUpdate,
+    String? availableUpdate,
     String? errorMessage,
     bool clearError = false,
   }) => UsageWidgetState(
@@ -98,6 +107,8 @@ class UsageWidgetState extends Equatable {
     alwaysOnTop: alwaysOnTop ?? this.alwaysOnTop,
     accent: accent ?? this.accent,
     accentPickerAvailable: accentPickerAvailable ?? this.accentPickerAvailable,
+    autoUpdate: autoUpdate ?? this.autoUpdate,
+    availableUpdate: availableUpdate ?? this.availableUpdate,
     errorMessage: clearError ? null : errorMessage ?? this.errorMessage,
   );
 
@@ -114,6 +125,8 @@ class UsageWidgetState extends Equatable {
     alwaysOnTop,
     accent,
     accentPickerAvailable,
+    autoUpdate,
+    availableUpdate,
     errorMessage,
   ];
 }

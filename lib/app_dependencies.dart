@@ -7,6 +7,7 @@ import 'package:claude_usage_widget/data/services/claude_settings_service.dart';
 import 'package:claude_usage_widget/data/services/notification_service.dart';
 import 'package:claude_usage_widget/data/services/preferences_service.dart';
 import 'package:claude_usage_widget/data/services/tray_service.dart';
+import 'package:claude_usage_widget/data/services/update_service.dart';
 import 'package:claude_usage_widget/data/services/usage_file_service.dart';
 import 'package:claude_usage_widget/data/services/window_service.dart';
 import 'package:claude_usage_widget/ui/core/glass_theme.dart';
@@ -65,6 +66,7 @@ class AppDependencies {
       tray: SystemTrayService(),
       notifications: _notifications(),
       accentPicker: Platform.isLinux,
+      updater: GitHubUpdateService(),
     );
     return AppDependencies(
       preferences: preferences,

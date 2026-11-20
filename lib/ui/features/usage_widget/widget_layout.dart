@@ -21,11 +21,14 @@ abstract final class WidgetLayout {
   /// The expanded view before any data has arrived.
   static const emptyDetails = Size(264, 164);
 
+  /// Height of one settings row.
+  static const menuRowHeight = 36.0;
+
   /// Settings, with the tray entry.
-  static const menuWithTray = Size(264, 309);
+  static const menuWithTray = Size(264, 345);
 
   /// Settings, without the tray entry.
-  static const menuWithoutTray = Size(264, 273);
+  static const menuWithoutTray = Size(264, 309);
 
   /// Extra settings height for the accent colour row and its hairline.
   static const accentRowHeight = 36.5;
@@ -40,10 +43,14 @@ abstract final class WidgetLayout {
     },
   };
 
+  /// Settings grow by one row for the accent picker (Linux) and by one when
+  /// an update is waiting.
   static Size _menu(UsageWidgetState state) {
     final base = state.trayAvailable ? menuWithTray : menuWithoutTray;
-    if (!state.accentPickerAvailable) return base;
-    return Size(base.width, base.height + accentRowHeight);
+    var height = base.height;
+    if (state.accentPickerAvailable) height += accentRowHeight;
+    if (state.availableUpdate != null) height += menuRowHeight;
+    return Size(base.width, height);
   }
 
   /// Size of the window that holds a card of [card] size.

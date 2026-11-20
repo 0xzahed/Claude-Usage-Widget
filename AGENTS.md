@@ -11,8 +11,9 @@ A Flutter desktop widget that shows Claude Code usage. Two Dart packages:
   line command. The app also imports it as a path package for shared helpers.
 
 Data flow: Claude Code → `usage_bridge` → JSON records in
-`<claude config>/usage-widget/` → the app. The app makes **no network calls**.
-Keep it that way.
+`<claude config>/usage-widget/` → the app. The app's only network request is the update check in
+`lib/data/services/update_service.dart` (the latest release's version number,
+user-switchable in Settings). Do not add any other network call.
 
 ## Commands
 
@@ -87,7 +88,7 @@ overflow in `test/ui/views_test.dart` is a real overflow.
 - Rate limits only change when Claude Code receives an API response. Record
   recency is not data freshness; see `AggregateUsage` before changing how
   sessions are merged.
-- CI pins Flutter 3.47.9. Newer stable releases add lints that fail
+- CI pins Flutter 3.50.0. Newer stable releases add lints that fail
   `flutter analyze`; bump the pin and fix them in the same change.
 - macOS and Windows build in CI but have never been run. Say so in anything
   you write about them.
