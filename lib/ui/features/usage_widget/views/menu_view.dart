@@ -7,7 +7,7 @@ import 'package:claude_usage_widget/ui/core/glass_theme.dart';
 import 'package:claude_usage_widget/ui/core/widgets/glass_tile.dart';
 import 'package:claude_usage_widget/ui/features/usage_widget/cubit/usage_widget_state.dart';
 import 'package:claude_usage_widget/ui/features/usage_widget/settings_actions.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 
 /// Settings, shown on right-click: grouped rows with switches and a slider.
 class MenuView extends StatelessWidget {

@@ -67,6 +67,7 @@ class UsageWidgetState extends Equatable {
 
   /// Whether the settings offer the accent colour picker.
   final bool accentPickerAvailable;
+
   /// Whether the app checks for and installs new releases.
   final bool autoUpdate;
 

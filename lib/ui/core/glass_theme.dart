@@ -1,5 +1,5 @@
 import 'package:claude_usage_widget/config/app_constants.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// The widget's palette, with a dark and a light variant.
 ///

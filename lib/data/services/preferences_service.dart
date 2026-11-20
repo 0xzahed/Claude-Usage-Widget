@@ -49,6 +49,7 @@ class PreferencesService {
   /// Saves the accent colour.
   Future<void> saveAccent(AccentChoice value) =>
       _prefs.setString(_accent, value.name);
+
   /// Whether the app looks for and installs new releases; on unless turned off.
   bool get autoUpdate => _prefs.getBool(_autoUpdate) ?? true;
 

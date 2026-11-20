@@ -1,8 +1,8 @@
 import 'package:claude_usage_widget/ui/core/glass_theme.dart';
 import 'package:claude_usage_widget/ui/features/usage_widget/cubit/usage_widget_cubit.dart';
 import 'package:claude_usage_widget/ui/features/usage_widget/views/usage_widget_view.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Root widget: provides the cubit to the tree.
 class UsageWidgetApp extends StatelessWidget {

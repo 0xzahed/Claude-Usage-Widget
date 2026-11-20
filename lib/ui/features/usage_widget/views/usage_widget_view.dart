@@ -10,8 +10,8 @@ import 'package:claude_usage_widget/ui/features/usage_widget/views/details_view.
 import 'package:claude_usage_widget/ui/features/usage_widget/views/menu_view.dart';
 import 'package:claude_usage_widget/ui/features/usage_widget/views/pill_view.dart';
 import 'package:claude_usage_widget/ui/features/usage_widget/widget_layout.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// The floating card. It springs between the shapes of the three views while
 /// their content cross-fades, so the widget reads as one object changing
